@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joyeux Anniversaire humaine...! </title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at center, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .start-screen {
+      position: absolute;
+      text-align: center;
+      z-index: 10;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: all 0.5s ease;
+      user-select: none;
+    }
+
+    .gift-icon {
+      font-size: 5rem;
+      margin-bottom: 15px;
+      animation: pulse 1.2s infinite alternate;
+    }
+
+    .start-btn {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ff75a0;
+      letter-spacing: 1px;
+    }
+
+    .countdown-screen {
+      position: absolute;
+      text-align: center;
+      z-index: 9;
+      display: none;
+    }
+
+    .countdown-number {
+      font-size: 7rem;
+      font-weight: bold;
+      color: #ff75a0;
+      text-shadow: 0 0 30px rgba(255, 117, 160, 0.8);
+      animation: pop 1s infinite;
+    }
+
+    .countdown-text {
+      font-size: 1.3rem;
+      color: #f8f9fa;
+      margin-bottom: 10px;
+    }
+
+    .card-content {
+      position: absolute;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      max-width: 90%;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      z-index: 5;
+    }
+
+    .card-content.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4.5rem;
+      color: #ff75a0;
+      text-shadow: 0 0 25px rgba(255, 117, 160, 0.8);
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.4rem;
+      color: #f8f9fa;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0.4; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ...S -->
+  <audio id="fireworkSound" preload="auto" loop>
+    <source src="https://gfxsounds.com/wp-content/uploads/2024/01/Fireworks-display-explosions-medium.mp3" type="audio/mpeg">
+  </audio>
+
+  <canvas id="canvas"></canvas>
+
+  <div class="start-screen" id="startScreen">
+    <div class="gift-icon">🎁</div>
+    <div class="start-btn">Do not touch...!</div>
+  </div>
+
+  <div class="countdown-screen" id="countdownScreen">
+    <div class="countdown-text">Prépare-toi... humaine!</div>
+    <div class="countdown-number" id="timer">6</div>
+  </div>
+
+  <div class="card-content" id="cardContent">
+    <h1>Joyeux Anniversaire Iklim! ❤️</h1>
+    <p>Que cette journée soit aussi magnifique, éclatante et spéciale que toi...</p>
+  </div>
+
+  <script>
+    const fireworkAudio = document.getElementById('fireworkSound');
+
+   
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let rockets = [];
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    
+    function launchRocket() {
+      const startX = Math.random() * (canvas.width * 0.8) + (canvas.width * 0.1);
+      const targetY = Math.random() * (canvas.height * 0.4) + (canvas.height * 0.1);
+      const speed = Math.random() * 3 + 8;
+      
+      const colors = ['#ff75a0', '#ffea00', '#00f5d4', '#7b2cbf', '#f72585', '#ffffff', '#ffb703'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      rockets.push({
+        x: startX,
+        y: canvas.height,
+        targetY: targetY,
+        speed: speed,
+        color: color
+      });
+    }
+
+    
+    function explode(x, y, color) {
+      const particleCount = 100;
+      for (let i = 0; i < particleCount; i++) {
+        const angle = (Math.PI * 2 / particleCount) * i;
+        const speed = Math.random() * 6 + 2;
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          alpha: 1,
+          decay: Math.random() * 0.015 + 0.008,
+          color: color
+        });
+      }
+    }
+
+    
+    function animate() {
+      ctx.fillStyle = 'rgba(26, 26, 46, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        let r = rockets[i];
+        r.y -= r.speed;
+
+        
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffea00';
+        ctx.fill();
+
+        
+        if (r.y <= r.targetY) {
+          explode(r.x, r.targetY, r.color);
+          rockets.splice(i, 1);
+        }
+      }
+
+      
+      for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.05; 
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    
+    const startScreen = document.getElementById('startScreen');
+    const countdownScreen = document.getElementById('countdownScreen');
+    const timerElement = document.getElementById('timer');
+    const cardContent = document.getElementById('cardContent');
+
+    startScreen.addEventListener('click', () => {
+      
+      fireworkAudio.volume = 1.0;
+      fireworkAudio.play().then(() => {
+        fireworkAudio.pause();
+        fireworkAudio.currentTime = 0;
+      }).catch(e => console.log("Prêt pour la lecture audio"));
+
+      startScreen.style.opacity = '0';
+      setTimeout(() => {
+        startScreen.style.display = 'none';
+        countdownScreen.style.display = 'block';
+        startCountdown();
+      }, 500);
+    });
+
+    function startCountdown() {
+      let timeLeft = 6;
+
+      const countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          timerElement.textContent = timeLeft;
+        } else {
+          clearInterval(countdownInterval);
+          
+          countdownScreen.style.opacity = '0';
+          setTimeout(() => {
+            countdownScreen.style.display = 'none';
+            cardContent.classList.add('show');
+            
+            
+            fireworkAudio.currentTime = 0;
+            fireworkAudio.loop = true;
+            fireworkAudio.play();
+
+            
+            startLaunchingRockets();
+          }, 500);
+        }
+      }, 1000);
+    }
+
+    function startLaunchingRockets() {
+      
+      setInterval(() => {
+        launchRocket();
+      }, 500);
+    }
+  </script>
+</body>
+</html>
