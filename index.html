@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joyeux Anniversaire humaine...! </title>
+  <title>Happy Teacher's Day!</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: radial-gradient(circle at center, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      background: radial-gradient(circle at center, #0b132b 0%, #1c2541 50%, #000814 100%);
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -38,12 +38,12 @@
       text-align: center;
       z-index: 10;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.05);
       padding: 30px;
       border-radius: 20px;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       transition: all 0.5s ease;
       user-select: none;
     }
@@ -57,7 +57,7 @@
     .start-btn {
       font-size: 1.2rem;
       font-weight: 600;
-      color: #ff75a0;
+      color: #ffb703;
       letter-spacing: 1px;
     }
 
@@ -71,8 +71,8 @@
     .countdown-number {
       font-size: 7rem;
       font-weight: bold;
-      color: #ff75a0;
-      text-shadow: 0 0 30px rgba(255, 117, 160, 0.8);
+      color: #ffb703;
+      text-shadow: 0 0 30px rgba(255, 183, 3, 0.8);
       animation: pop 1s infinite;
     }
 
@@ -93,9 +93,9 @@
       background: rgba(255, 255, 255, 0.05);
       padding: 40px;
       border-radius: 24px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
       z-index: 5;
     }
 
@@ -108,14 +108,14 @@
     h1 {
       font-family: 'Dancing Script', cursive;
       font-size: 4.5rem;
-      color: #ff75a0;
-      text-shadow: 0 0 25px rgba(255, 117, 160, 0.8);
+      color: #ffb703;
+      text-shadow: 0 0 25px rgba(255, 183, 3, 0.6);
       margin-bottom: 15px;
     }
 
     p {
       font-size: 1.4rem;
-      color: #f8f9fa;
+      color: #e0e1dd;
       line-height: 1.6;
       font-weight: 300;
     }
@@ -134,7 +134,6 @@
 </head>
 <body>
 
-  <!-- ...S -->
   <audio id="fireworkSound" preload="auto" loop>
     <source src="https://gfxsounds.com/wp-content/uploads/2024/01/Fireworks-display-explosions-medium.mp3" type="audio/mpeg">
   </audio>
@@ -142,24 +141,23 @@
   <canvas id="canvas"></canvas>
 
   <div class="start-screen" id="startScreen">
-    <div class="gift-icon">🎁</div>
-    <div class="start-btn">Do not touch...!</div>
+    <div class="gift-icon">🎓</div>
+    <div class="start-btn">Click to open</div>
   </div>
 
   <div class="countdown-screen" id="countdownScreen">
-    <div class="countdown-text">Prépare-toi... humaine!</div>
+    <div class="countdown-text">Loading...</div>
     <div class="countdown-number" id="timer">6</div>
   </div>
 
   <div class="card-content" id="cardContent">
-    <h1>Joyeux Anniversaire en avance Iklîm! ❤️</h1>
-    <p>J’espère que cette journée sera aussi magnique que toi...</p>
+    <h1>Happy Teacher's Day, Sir!</h1>
+    <p>I don't know if you're still a teacher, but you were once mine...</p>
   </div>
 
   <script>
     const fireworkAudio = document.getElementById('fireworkSound');
 
-   
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     
@@ -173,13 +171,13 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    
     function launchRocket() {
       const startX = Math.random() * (canvas.width * 0.8) + (canvas.width * 0.1);
       const targetY = Math.random() * (canvas.height * 0.4) + (canvas.height * 0.1);
       const speed = Math.random() * 3 + 8;
       
-      const colors = ['#ff75a0', '#ffea00', '#00f5d4', '#7b2cbf', '#f72585', '#ffffff', '#ffb703'];
+      // Palette de feu d'artifice dorée, bleu cyan et blanche
+      const colors = ['#ffb703', '#48cae4', '#00f5d4', '#3a86ff', '#ffffff', '#ffd166'];
       const color = colors[Math.floor(Math.random() * colors.length)];
 
       rockets.push({
@@ -191,7 +189,6 @@
       });
     }
 
-    
     function explode(x, y, color) {
       const particleCount = 100;
       for (let i = 0; i < particleCount; i++) {
@@ -209,30 +206,25 @@
       }
     }
 
-    
     function animate() {
-      ctx.fillStyle = 'rgba(26, 26, 46, 0.2)';
+      ctx.fillStyle = 'rgba(11, 19, 43, 0.25)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      
       for (let i = rockets.length - 1; i >= 0; i--) {
         let r = rockets[i];
         r.y -= r.speed;
 
-        
         ctx.beginPath();
         ctx.arc(r.x, r.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffea00';
+        ctx.fillStyle = '#ffb703';
         ctx.fill();
 
-        
         if (r.y <= r.targetY) {
           explode(r.x, r.targetY, r.color);
           rockets.splice(i, 1);
         }
       }
 
-      
       for (let i = particles.length - 1; i >= 0; i--) {
         let p = particles[i];
         p.x += p.vx;
@@ -256,14 +248,12 @@
     }
     animate();
 
-    
     const startScreen = document.getElementById('startScreen');
     const countdownScreen = document.getElementById('countdownScreen');
     const timerElement = document.getElementById('timer');
     const cardContent = document.getElementById('cardContent');
 
     startScreen.addEventListener('click', () => {
-      
       fireworkAudio.volume = 1.0;
       fireworkAudio.play().then(() => {
         fireworkAudio.pause();
@@ -293,12 +283,10 @@
             countdownScreen.style.display = 'none';
             cardContent.classList.add('show');
             
-            
             fireworkAudio.currentTime = 0;
             fireworkAudio.loop = true;
             fireworkAudio.play();
 
-            
             startLaunchingRockets();
           }, 500);
         }
@@ -306,7 +294,6 @@
     }
 
     function startLaunchingRockets() {
-      
       setInterval(() => {
         launchRocket();
       }, 500);
